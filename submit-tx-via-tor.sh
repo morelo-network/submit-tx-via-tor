@@ -2,23 +2,23 @@
  
 SCRIPT_DESCRIPTION="\
 This is a simple script designed to make it very hard for third parties to link
-your monero transactions to you via your IP address. This script achieves this
-extra privacy by sending your monero transaction to the monero network via the
+your morelo transactions to you via your IP address. This script achieves this
+extra privacy by sending your morelo transaction to the morelo network via the
 Tor network.
  
-How it works is simple: you pass a raw_monero_tx file (a monero transaction
-created by monero-wallet-cli) to this script as an argument and it will
-submit this transaction to a monerod, tor onion node via the Tor network. Your
-real IP address will be concealed from the remote monerod. The real IP address
-of the remote monerod will be concealed from you. Any computers passively
+How it works is simple: you pass a raw_morelo_tx file (a morelo transaction
+created by morelo-wallet-cli) to this script as an argument and it will
+submit this transaction to a morelod, tor onion node via the Tor network. Your
+real IP address will be concealed from the remote morelod. The real IP address
+of the remote morelod will be concealed from you. Any computers passively
 monitoring your connection will not be able to tell which computer you are
 connecting to and what data you're sending.
  
-To make monero-wallet-cli (the most popular Monero wallet) create a
-raw_monero_tx file instead of submitting a transaction directly to the
-monero network via your Internet connection, you have to start
-monero-wallet-cli with the --do-not-relay switch or add do-not-relay=1
-to your monero-wallet-cli configuration file.
+To make morelo-wallet-cli (the most popular Morelo wallet) create a
+raw_morelo_tx file instead of submitting a transaction directly to the
+morelo network via your Internet connection, you have to start
+morelo-wallet-cli with the --do-not-relay switch or add do-not-relay=1
+to your morelo-wallet-cli configuration file.
  
 Make sure you have installed Tor before attempting to use this script.
  
@@ -36,8 +36,8 @@ script before using it."
 # USER CONFIG: GENERAL
  
 # The following path will be checked if you don't specify the path to a
-# raw_monero_tx file as a argument when calling this script.
-FALLBACK_RAW_MONERO_TX_PATH="${HOME}/raw_monero_tx"
+# raw_morelo_tx file as a argument when calling this script.
+FALLBACK_RAW_MORELO_TX_PATH="${HOME}/raw_morelo_tx"
  
 # Specify the Tor node socks server address.
 # Tor's default value is: 127.0.0.1:9050
@@ -51,21 +51,21 @@ TOR_NODE='127.0.0.1:9050'
  
 # Uncomment only one NODE variable
  
-# XMRlab node:
+# MORELOlab node:
 #
 # Announcement:
-#   https://www.reddit.com/r/Monero/comments/78cqsd/xmrlab_starts_a_free_public_monero_node_as_onion/
+#   https://www.reddit.com/r/Morelo/comments/78cqsd/MORELOlab_starts_a_free_public_morelo_node_as_onion/
 # Node home page:
-#   http://xmrag4hf5xlabmob.onion/
-#NODE='xmrag4hf5xlabmob.onion:18081'
+#   http://MORELOag4hf5xlabmob.onion/
+#NODE='MORELOag4hf5xlabmob.onion:18081'
  
-# MoneroWorld.com node:
+# MoreloWorld.com node:
 #
 # Node home page:
-#   https://moneroworld.com/
+#   https://moreloworld.com/
 # Special note:
 #   This is actually the onion address of a proxy server which will
-#   automatically route your connect to one of many online monero daemons.
+#   automatically route your connect to one of many online morelo daemons.
 NODE='zdhkwneu7lfaum2p.onion:18099'
  
 ###############################################################################
@@ -97,12 +97,12 @@ fi
  
 if [[ "$1" == -* ]]; then
     if [[ "$1" == "--help" || "$1" == "-h" ]]; then
-        echo "$0 [PATH_TO_RAW_MONERO_TX]"
+        echo "$0 [PATH_TO_RAW_MORELO_TX]"
         echo
         echo "$SCRIPT_DESCRIPTION"
         exit 0
     elif [[ "$1" == "--test" || "$1" == "-t" ]]; then
-        echo 'Testing connection to the configured remote monerod:'
+        echo 'Testing connection to the configured remote morelod:'
         echo "$NODE"
         OUTPUT="$(
            /usr/bin/curl \
@@ -132,32 +132,32 @@ if [[ "$1" == -* ]]; then
     fi
 fi
  
-echo 'Checking the raw_monero_tx file is present.'
+echo 'Checking the raw_morelo_tx file is present.'
 if [[ "$1" != "" ]]; then
-    RAW_MONERO_TX="$1"
-elif [[ "$FALLBACK_RAW_MONERO_TX_PATH" != "" ]]; then
-    RAW_MONERO_TX="$FALLBACK_RAW_MONERO_TX_PATH"
+    RAW_MORELO_TX="$1"
+elif [[ "$FALLBACK_RAW_MORELO_TX_PATH" != "" ]]; then
+    RAW_MORELO_TX="$FALLBACK_RAW_MORELO_TX_PATH"
 else
-    echo "ERROR: No raw_monero_tx file was given as a command line argument"
+    echo "ERROR: No raw_morelo_tx file was given as a command line argument"
     echo "       and no fallback location to check is specified in the script."
     echo "       Run script with --help argument for some hints on what to do."
     final_report 1
 fi
-if [[ ! -f "$RAW_MONERO_TX" ]]; then
-    echo "ERROR: A monero transaction file was not found at the following path:"
-    echo "       $RAW_MONERO_TX"
+if [[ ! -f "$RAW_MORELO_TX" ]]; then
+    echo "ERROR: A morelo transaction file was not found at the following path:"
+    echo "       $RAW_MORELO_TX"
     echo "       Run script with --help argument for some hints on what to do."
     final_report 1
 fi
  
 echo 'Loading the file.'
-readonly TX="$(cat "$RAW_MONERO_TX")"
+readonly TX="$(cat "$RAW_MORELO_TX")"
  
-echo 'Checking the file is a valid raw, monero tx.'
+echo 'Checking the file is a valid raw, morelo tx.'
 readonly TX_MIN_LEN=3000 # Assume minimum is above 1500 Bytes. x2 because hex-ascii encoding.
 readonly TX_LEN=${#TX}
 if (( TX_LEN < TX_MIN_LEN )); then
-    echo "ERROR: the raw monero tx file is less than $TX_MIN_LEN characters"
+    echo "ERROR: the raw morelo tx file is less than $TX_MIN_LEN characters"
     echo "       long. Something is probably wrong with it."
     final_report 1
 fi
@@ -168,7 +168,7 @@ fi
 echo 'Constructing the JSON-RPC message.'
 DATA="{\"tx_as_hex\":\"${TX}\", \"do_not_relay\":false}"
  
-echo 'Submitting tx to the remote monerod.'
+echo 'Submitting tx to the remote morelod.'
 OUTPUT="$(
    curl \
        --proxy socks5h://"$TOR_NODE" \
