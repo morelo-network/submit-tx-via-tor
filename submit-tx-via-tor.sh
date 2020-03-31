@@ -47,26 +47,6 @@ TOR_NODE='127.0.0.1:9050'
  
  
 ###############################################################################
-# USER CONFIG: NODE SELECTION
- 
-# Uncomment only one NODE variable
- 
-# MORELOlab node:
-#
-# Announcement:
-#   https://www.reddit.com/r/Morelo/comments/78cqsd/MORELOlab_starts_a_free_public_morelo_node_as_onion/
-# Node home page:
-#   http://MORELOag4hf5xlabmob.onion/
-#NODE='MORELOag4hf5xlabmob.onion:18081'
- 
-# MoreloWorld.com node:
-#
-# Node home page:
-#   https://moreloworld.com/
-# Special note:
-#   This is actually the onion address of a proxy server which will
-#   automatically route your connect to one of many online morelo daemons.
-NODE='zdhkwneu7lfaum2p.onion:18099'
  
 ###############################################################################
  
